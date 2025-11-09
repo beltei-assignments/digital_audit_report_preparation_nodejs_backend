@@ -1,0 +1,35 @@
+{
+  "host": "localhost",
+  "port": 5000,
+  "cors": {
+    "origin": "*"
+  },
+  "database": {
+    "name": "your_database_name",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "username": "your_username",
+    "password": "your_password",
+    "dialect": "mariadb",
+    "timezone": "Asia/Phnom_Penh",
+    "option": {
+      "sync": false,
+      "force": false,
+      "logging": false,
+      "dateStrings": true,
+      "typeCast": true,
+      "decimalNumbers": true,
+      "pool": {
+        "max": 5,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+      }
+    },
+    "model": {
+      "freezeTableName": true,
+      "createdAt": "created_at",
+      "updatedAt": "updated_at"
+    }
+  }
+}

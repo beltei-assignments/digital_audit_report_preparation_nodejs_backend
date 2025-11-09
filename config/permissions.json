@@ -1,0 +1,35 @@
+{
+  "ADMINISTRATOR": {
+    "permissions": {
+      "DASHBOARD": ["ALL"],
+      "USERS": ["ALL"],
+      "ROLES": ["ALL"],
+      "PERMISSIONS": ["ALL"],
+      "REGULATORS": ["ALL"],
+      "STATUSES": ["ALL"],
+      "REPORTS": ["ALL"]
+    }
+  },
+  "MANAGER": {
+    "permissions": {
+      "DASHBOARD": ["ALL"],
+      "USERS": ["read"],
+      "ROLES": ["read"],
+      "PERMISSIONS": ["read"],
+      "REGULATORS": ["read"],
+      "STATUSES": ["read"],
+      "REPORTS": ["ALL"]
+    }
+  },
+  "AUDITOR": {
+    "permissions": {
+      "DASHBOARD": ["ALL"],
+      "USERS": ["read"],
+      "ROLES": ["read"],
+      "PERMISSIONS": ["read"],
+      "REGULATORS": ["read"],
+      "STATUSES": ["read"],
+      "REPORTS": ["ALL"]
+    }
+  }
+}
