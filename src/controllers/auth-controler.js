@@ -1,9 +1,10 @@
-import { fn, col } from 'sequelize'
+import fs from 'fs'
+import path from 'path'
 import bcrypt from 'bcryptjs'
+import { config } from '../../boot/index.js'
 import * as authService from '../services/auth.js'
-import { generateToken } from '../utils/jwt.js'
-import models from '../models/index.js'
-const { Permission } = models
+import { generateToken, verifyToken } from '../utils/jwt.js'
+import { sendMail } from '../lib/mailer.js'
 
 export async function login(req, res, next) {
   try {
@@ -11,7 +12,7 @@ export async function login(req, res, next) {
     const user = await authService.getUserByEmail(email)
 
     if (!user) {
-      return res.status(403).send({
+      return res.status(401).send({
         success: false,
         message: 'Your email or password is invalid',
       })
@@ -46,7 +47,10 @@ export async function login(req, res, next) {
       }
 
       const token = generateToken({
-        user_id: user.id,
+        payload: {
+          user_id: user.id,
+        },
+        secretOrPrivateKey: 'LOGIN-KEY-HL8D8A3OA1',
       })
       const data = Object.fromEntries(
         Object.entries(user.dataValues).filter(([key, _]) => key !== 'password')
@@ -90,7 +94,7 @@ export async function login(req, res, next) {
       })
       await user.increment('count_login_fail_time', { by: 1 })
     }
-    return res.status(403).send({
+    return res.status(401).send({
       success: false,
       message: 'Your email or password is invalid',
     })
@@ -123,5 +127,98 @@ export async function whoAmI(req, res, next) {
     res.json({ user: data, roles, permissions })
   } catch (error) {
     next(error)
+  }
+}
+
+export async function sendResetPassword(req, res) {
+  const { email } = req.body
+  const resUser = await authService.getUserByEmail(email)
+  if (!resUser)
+    return res.status(404).send({ success: false, message: 'Email is invalid' })
+
+  try {
+    const token = generateToken({
+      payload: { email },
+      secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
+      expiresIn: '60m',
+    })
+    const html = generateResetPasswordEmail(resUser, token)
+
+    const mailOptions = {
+      from: config.mail.from,
+      to: email,
+      subject: 'Reset Password',
+      html,
+    }
+    await sendMail(mailOptions)
+
+    res.send({ success: true, message: 'Send email successful.' })
+  } catch (error) {
+    throw error
+  }
+}
+
+export function generateResetPasswordEmail(user, token) {
+  const templatePath = path.join(
+    process.cwd(),
+    'src/assets/mail-templates',
+    'reset_password_template.xml'
+  )
+  let template = fs.readFileSync(templatePath, 'utf8')
+
+  // Replace variables
+  template = template
+    .replace(/\$\{FIRST_NAME\}/g, user.first_name)
+    .replace(/\$\{LAST_NAME\}/g, user.last_name)
+    .replace(/\$\{TOKEN\}/g, token)
+    .replace(/\$\{BASE_URL\}/g, config.baseURL)
+    .replace(/\$\{FRONTEND_BASE_URL\}/g, config.frontendBaseURL)
+
+  return template
+}
+
+export async function verifyResetPassword(req, res) {
+  try {
+    const { token } = req.body
+    const decode = verifyToken({
+      token,
+      secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
+    })
+
+    res.send({
+      success: true,
+      message: 'Token found',
+      data: {
+        email: decode.email,
+      },
+    })
+  } catch (error) {
+    res
+      .status(404)
+      .send({ success: false, message: 'Token is invalid or expire' })
+  }
+}
+
+export async function resetPassword(req, res) {
+  try {
+    const { token, password } = req.body
+    const decode = verifyToken({
+      token,
+      secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
+    })
+    const encryptedPassword = await bcrypt.hash(password, 10)
+
+    const user = await authService.getUserByEmail(decode.email)
+    user.password = encryptedPassword
+    await user.save()
+
+    res.send({
+      success: true,
+      message: 'Password has been changed',
+    })
+  } catch (error) {
+    res
+      .status(404)
+      .send({ success: false, message: 'Token is invalid or expire' })
   }
 }

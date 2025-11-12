@@ -12,7 +12,10 @@ export default function verifyHeader(req, res, next) {
   }
 
   try {
-    const decode = verifyToken(token)
+    const decode = verifyToken({
+      token,
+      secretOrPrivateKey: 'LOGIN-KEY-HL8D8A3OA1',
+    })
     req.user = decode
   } catch (error) {
     return res

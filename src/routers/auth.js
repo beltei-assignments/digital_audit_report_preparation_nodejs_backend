@@ -7,6 +7,7 @@ import * as authController from '../controllers/auth-controler.js'
 export default function initRoutes(middleware) {
   const router = Router()
   router.get('/whoami', middleware, authController.whoAmI)
+
   router.post(
     '/login',
     ensureFields(
@@ -23,46 +24,50 @@ export default function initRoutes(middleware) {
     ),
     authController.login
   )
-  // router.post(
-  //   '/send-pwd',
-  //   ensureFields(
-  //     {
-  //       email: {
-  //         notEmpty: true,
-  //         isEmail: true,
-  //       },
-  //     },
-  //     { limitTo: ['body'] }
-  //   ),
-  //   authService.sendPwd
-  // )
-  // router.post(
-  //   '/check-pwd',
-  //   ensureFields(
-  //     {
-  //       token: {
-  //         notEmpty: true,
-  //       },
-  //     },
-  //     { limitTo: ['body'] }
-  //   ),
-  //   authService.checkPwd
-  // )
-  // router.post(
-  //   '/reset-pwd',
-  //   ensureFields(
-  //     {
-  //       password: {
-  //         notEmpty: true,
-  //       },
-  //       token: {
-  //         notEmpty: true,
-  //       },
-  //     },
-  //     { limitTo: ['body'] }
-  //   ),
-  //   authService.resetPwd
-  // )
+
+  router.post(
+    '/send-reset-password',
+    ensureFields(
+      {
+        email: {
+          notEmpty: true,
+          isEmail: true,
+        },
+      },
+      { limitTo: ['body'] }
+    ),
+    authController.sendResetPassword
+  )
+
+  router.post(
+    '/verify-reset-password',
+    ensureFields(
+      {
+        token: {
+          notEmpty: true,
+        },
+      },
+      { limitTo: ['body'] }
+    ),
+    authController.verifyResetPassword
+  )
+
+  router.post(
+    '/reset-password',
+    ensureFields(
+      {
+        password: {
+          notEmpty: true,
+        },
+        token: {
+          notEmpty: true,
+        },
+      },
+      { limitTo: ['body'] }
+    ),
+    authController.resetPassword
+  )
+
   // router.post(
   //   '/change-pwd',
   //   middleware,

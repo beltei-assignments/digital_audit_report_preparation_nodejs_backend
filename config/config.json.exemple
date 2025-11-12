@@ -4,6 +4,8 @@
   "cors": {
     "origin": "*"
   },
+  "baseURL": "http://localhost:5000",
+  "frontendBaseURL": "http://localhost:3000",
   "database": {
     "name": "your_database_name",
     "host": "127.0.0.1",
@@ -30,6 +32,16 @@
       "freezeTableName": true,
       "createdAt": "created_at",
       "updatedAt": "updated_at"
+    }
+  },
+  "mail": {
+    "from": "digital-audit-reply@example.cpm",
+    "host": "localhost",
+    "port": "1025",
+    "secure": false,
+    "auth": {
+      "user": "user_example",
+      "pass": "pass_example"
     }
   }
 }
