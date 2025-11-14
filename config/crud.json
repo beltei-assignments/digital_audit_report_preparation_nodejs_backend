@@ -1,0 +1,79 @@
+{
+  "TABLES": {
+    "regulators": {
+      "USERS_ALLOWED": {
+        "ADMINISTRATOR": "ALL"
+      },
+      "RULES": {
+        "name": {
+          "notEmpty": true,
+          "isLength": {
+            "options": {
+              "max": 255,
+              "min": 1
+            }
+          }
+        },
+        "name_kh": {
+          "notEmpty": true,
+          "isLength": {
+            "options": {
+              "max": 255,
+              "min": 1
+            }
+          }
+        }
+      }
+    },
+    "statuses": {
+      "USERS_ALLOWED": {
+        "ADMINISTRATOR": "ALL"
+      },
+      "RULES": {
+        "name": {
+          "notEmpty": true,
+          "isLength": {
+            "options": {
+              "max": 255,
+              "min": 1
+            }
+          }
+        },
+        "name_kh": {
+          "notEmpty": true,
+          "isLength": {
+            "options": {
+              "max": 255,
+              "min": 1
+            }
+          }
+        }
+      }
+    },
+    "report_types": {
+      "USERS_ALLOWED": {
+        "ADMINISTRATOR": "ALL"
+      },
+      "RULES": {
+        "name": {
+          "notEmpty": true,
+          "isLength": {
+            "options": {
+              "max": 255,
+              "min": 1
+            }
+          }
+        },
+        "name_kh": {
+          "notEmpty": true,
+          "isLength": {
+            "options": {
+              "max": 255,
+              "min": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

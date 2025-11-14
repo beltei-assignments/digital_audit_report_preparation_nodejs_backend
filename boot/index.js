@@ -37,9 +37,13 @@ export async function boot(app) {
     })
   })
 
-  server.listen(config.port, () => {
-    console.log(`Server is running on url: http://${config.host}:${config.port}`)
-  })
-
+  console.log('-------> ⌛  Connecting to database, please wait... <-------')
   await sequelize.sync({ force: option.force })
+  console.log('-------> ✔️  Connectedto database <-------')
+
+  server.listen(config.port, () => {
+    console.log(
+      `-------> 🎉  Server is running on url: http://${config.host}:${config.port} <-------`
+    )
+  })
 }

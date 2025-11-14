@@ -1,7 +1,7 @@
 import { boot } from '../boot/index.js'
 import app from './app.js'
 import initAppRoutes from './routers/index.js'
-// import initCrud from './crud/index.js'
+import initCrud from './crud/index.js'
 import { errorHandler } from './middleware/error.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -15,6 +15,6 @@ app.use(errorHandler)
 app.use('/assets', express.static(path.join(__dirname, 'assets')))
 app.use(express.static('public'))
 
-boot(app)
+await boot(app)
+await initCrud(app)
 initAppRoutes(app)
-// initCrud(app)
