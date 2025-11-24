@@ -46,12 +46,6 @@ export async function login(req, res, next) {
         })
       }
 
-      const token = generateToken({
-        payload: {
-          user_id: user.id,
-        },
-        secretOrPrivateKey: 'LOGIN-KEY-HL8D8A3OA1',
-      })
       const data = Object.fromEntries(
         Object.entries(user.dataValues).filter(([key, _]) => key !== 'password')
       )
@@ -69,6 +63,15 @@ export async function login(req, res, next) {
           code,
           ...role_has_permissions.dataValues,
         }))
+
+      const token = generateToken({
+        payload: {
+          user_id: user.id,
+          roles: roles.map((role) => role.name),
+          permissions,
+        },
+        secretOrPrivateKey: 'LOGIN-KEY-HL8D8A3OA1',
+      })
 
       return res.json({
         success: true,

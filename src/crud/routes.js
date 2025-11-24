@@ -1,12 +1,13 @@
 import { Router } from 'express'
 import initServices from './services.js'
 import ensureFields from '../middleware/ensure-fields.js'
+import { ensurePermissions } from '../middleware/ensure-roles.js'
 
 export default function initRoutes(tableName, config) {
   const router = new Router()
   const services = initServices(tableName, config)
   // router.get('/schema', services.getSchema)
-  router.get('/', services.getAll)
+  router.get('/', ensurePermissions({ read: 'CRUD' }), services.getAll)
 
   router.get(
     '/:id',
@@ -19,6 +20,7 @@ export default function initRoutes(tableName, config) {
       },
       { limitTo: ['params'] }
     ),
+    ensurePermissions({ read: 'CRUD' }),
     services.findByPk
   )
 
@@ -30,6 +32,7 @@ export default function initRoutes(tableName, config) {
       },
       { limitTo: ['body'] }
     ),
+    ensurePermissions({ create: 'CRUD' }),
     services.create
   )
 
@@ -45,6 +48,7 @@ export default function initRoutes(tableName, config) {
       },
       { limitTo: ['params', 'body'] }
     ),
+    ensurePermissions({ update: 'CRUD' }),
     services.update
   )
 
@@ -59,6 +63,7 @@ export default function initRoutes(tableName, config) {
       },
       { limitTo: ['params'] }
     ),
+    ensurePermissions({ delete: 'CRUD' }),
     services.destroy
   )
 

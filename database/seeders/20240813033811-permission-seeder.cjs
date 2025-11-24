@@ -8,6 +8,24 @@ module.exports = {
 
     const permissions = [
       {
+        name: 'CRUD',
+        code: 'CRUD',
+        roles: [
+          {
+            code: 'ADMINISTRATOR',
+            allows: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
+          },
+          {
+            code: 'MANAGER',
+            allows: ['READ'],
+          },
+          {
+            code: 'AUDITOR',
+            allows: ['READ'],
+          },
+        ],
+      },
+      {
         name: 'Dashboard',
         code: 'DASHBOARD',
         roles: [
