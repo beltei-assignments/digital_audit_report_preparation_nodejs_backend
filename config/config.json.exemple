@@ -34,6 +34,9 @@
       "updatedAt": "updated_at"
     }
   },
+  "auth": {
+    "loginAttempts": 5
+  },
   "mail": {
     "from": "digital-audit-reply@example.cpm",
     "host": "localhost",

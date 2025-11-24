@@ -81,7 +81,8 @@ export async function login(req, res, next) {
     }
 
     await user.increment('count_login_fail', { by: 1 })
-    if (user.count_login_fail >= 3) {
+
+    if (user.count_login_fail >= config.auth.loginAttempts - 1) {
       const dateToContinue = new Date()
       const count =
         user.count_login_fail_time == 0 ? 1 : user.count_login_fail_time + 1
