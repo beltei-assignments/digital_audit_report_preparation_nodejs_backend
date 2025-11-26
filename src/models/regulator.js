@@ -16,7 +16,7 @@ export const schema = {
   },
   name_kh: {
     type: DataTypes.STRING(512),
-    allowNull: false,
+    allowNull: true,
   },
   disable: {
     type: DataTypes.BOOLEAN,

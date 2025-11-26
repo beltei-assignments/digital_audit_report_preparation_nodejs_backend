@@ -1,5 +1,7 @@
 import { sequelize } from '../../boot/index.js'
 import { autoConvertObjValues } from '../utils/converter.js'
+import { paginate } from '../utils/paginate.js'
+import { Op } from 'sequelize'
 
 export default function initServices(tableName, config) {
   const model = sequelize.model(tableName)
@@ -7,15 +9,26 @@ export default function initServices(tableName, config) {
   return { getAll, findByPk, create, update, destroy }
 
   async function getAll(req, res) {
-    const filters = req.query ? autoConvertObjValues(req.query) : null
+    const { page, limit, name, ...filters } = req.query
+      ? autoConvertObjValues(req.query)
+      : null
 
-    const data = await model.findAll({
-      ...(filters && { where: { ...filters } }),
+    const { count, rows } = await model.findAndCountAll({
+      ...(filters && {
+        where: {
+          ...(name && { name: { [Op.like]: `%${name}%` } }),
+          ...filters,
+          disable: false
+        },
+      }),
+      order: [['id', 'DESC']],
+      ...paginate({ page, limit }),
     })
 
     res.send({
       success: true,
-      data,
+      count,
+      rows,
     })
   }
 
