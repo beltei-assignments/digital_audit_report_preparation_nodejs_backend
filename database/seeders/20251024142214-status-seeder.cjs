@@ -17,6 +17,10 @@ module.exports = {
         name_kh: 'បានបដិសេធ',
       },
       {
+        name: 'Approved',
+        name_kh: 'យល់ព្រម',
+      },
+      {
         name: 'Finished',
         name_kh: 'រួចរាល់',
       },

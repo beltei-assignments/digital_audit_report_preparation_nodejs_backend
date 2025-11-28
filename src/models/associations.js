@@ -26,6 +26,28 @@ export default function defineAppDbAssociations(models) {
     onDelete: 'No Action',
   })
 
+  Report.belongsTo(Regulator, {
+    foreignKey: 'fk_regulator_id',
+    as: 'regulator',
+    onDelete: 'No Action',
+  })
+  Regulator.hasMany(Report, {
+    foreignKey: 'fk_regulator_id',
+    as: 'reports',
+    onDelete: 'No Action',
+  })
+
+  Report.belongsTo(Status, {
+    foreignKey: 'fk_status_id',
+    as: 'status',
+    onDelete: 'No Action',
+  })
+  Status.hasMany(Report, {
+    foreignKey: 'fk_status_id',
+    as: 'reports',
+    onDelete: 'No Action',
+  })
+
   // Role
   User.belongsToMany(Role, {
     through: UserHasRole, // or through: UserHasRole if it's a model

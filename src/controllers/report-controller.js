@@ -13,20 +13,32 @@ export async function getAll(req, res, next) {
   }
 }
 
+export async function getById(req, res, next) {
+  try {
+    const data = await reportService.getReportById({
+      id: req.params.id,
+      fk_auditor_id: req.user.user_id,
+    })
+    res.json(data)
+  } catch (error) {
+    next(error)
+  }
+}
+
 export async function create(req, res, next) {
   const transaction = await sequelize.transaction()
   try {
     const report = await reportService.createReport({
       payload: {
-        fk_user_id: req.user.user_id,
+        fk_auditor_id: req.user.user_id,
         ...req.body,
       },
       transaction,
     })
-    transaction.commit()
-    res.json({ data: account })
+    await transaction.commit()
+    res.json(report)
   } catch (error) {
-    transaction.rollback()
+    await transaction.rollback()
     next(error)
   }
 }
@@ -36,14 +48,30 @@ export async function update(req, res, next) {
   try {
     const report = await reportService.updateReport({
       id: req.params.id,
-      fk_user_id: req.user.user_id,
+      fk_auditor_id: req.user.user_id,
       payload: req.body,
       transaction,
     })
-    transaction.commit()
+    await transaction.commit()
     res.json({ data: report })
   } catch (error) {
-    transaction.rollback()
+    await transaction.rollback()
+    next(error)
+  }
+}
+
+export async function remove(req, res, next) {
+  const transaction = await sequelize.transaction()
+  try {
+    const report = await reportService.deleteReport({
+      id: req.params.id,
+      fk_auditor_id: req.user.user_id,
+      transaction,
+    })
+    await transaction.commit()
+    res.json({ data: report })
+  } catch (error) {
+    await transaction.rollback()
     next(error)
   }
 }

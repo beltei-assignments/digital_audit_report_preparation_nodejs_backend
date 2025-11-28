@@ -11,6 +11,7 @@ export const schema = {
     references: {
       model: 'roles',
       key: 'id',
+      onDelete: 'NO ACTION',
     },
   },
   fk_permission_id: {
@@ -20,6 +21,7 @@ export const schema = {
     references: {
       model: 'permissions',
       key: 'id',
+      onDelete: 'NO ACTION',
     },
   },
   read: {

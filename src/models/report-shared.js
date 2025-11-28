@@ -16,6 +16,7 @@ export const schema = {
     references: {
       model: 'reports',
       key: 'id',
+      onDelete: 'NO ACTION',
     },
   },
   fk_user_to_id: {
@@ -24,6 +25,7 @@ export const schema = {
     references: {
       model: 'users',
       key: 'id',
+      onDelete: 'NO ACTION',
     },
   },
   created_at: {

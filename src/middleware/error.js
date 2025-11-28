@@ -1,6 +1,17 @@
+import { AppError } from '../utils/error.js'
+
 export function errorHandler(err, req, res, next) {
-  console.error('Error:', err.message);
-  const status = err.status || 500
-  const message = err.message || 'Internal Server Error'
-  res.status(status).json({ error: message })
+  if (err instanceof AppError) {
+    return res.status(err.status || 400).json({
+      success: false,
+      message: err.message,
+    })
+  }
+
+  // Unknown or programming error
+  // return res.status(500).json({
+  //   success: false,
+  //   message: 'Internal Server Error',
+  // })
+  throw err
 }

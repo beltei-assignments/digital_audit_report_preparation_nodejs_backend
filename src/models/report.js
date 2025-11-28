@@ -10,12 +10,22 @@ export const schema = {
     primaryKey: true,
     type: DataTypes.INTEGER(11),
   },
+  fk_report_type_id: {
+    type: DataTypes.INTEGER(11),
+    allowNull: false,
+    references: {
+      model: 'report_types',
+      key: 'id',
+      onDelete: 'NO ACTION',
+    },
+  },
   fk_regulator_id: {
     type: DataTypes.INTEGER(11),
     allowNull: false,
     references: {
       model: 'regulators',
       key: 'id',
+      onDelete: 'NO ACTION',
     },
   },
   fk_status_id: {
@@ -24,14 +34,7 @@ export const schema = {
     references: {
       model: 'statuses',
       key: 'id',
-    },
-  },
-  fk_report_type_id: {
-    type: DataTypes.INTEGER(11),
-    allowNull: false,
-    references: {
-      model: 'report_types',
-      key: 'id',
+      onDelete: 'NO ACTION',
     },
   },
   fk_auditor_id: {
@@ -40,6 +43,7 @@ export const schema = {
     references: {
       model: 'users',
       key: 'id',
+      onDelete: 'NO ACTION',
     },
   },
   name: {
@@ -60,11 +64,11 @@ export const schema = {
     allowNull: false,
   },
   start_date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false,
   },
-  end_date: {
-    type: DataTypes.DATE,
+  due_date: {
+    type: DataTypes.DATEONLY,
     allowNull: false,
   },
   disable: {
