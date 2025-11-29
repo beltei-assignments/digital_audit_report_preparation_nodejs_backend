@@ -1,0 +1,8 @@
+version: '3'
+services:
+  audit-app-backend:
+    image: chetradocker/audit-app-backend
+    build: .
+    ports:
+      - "3001:3001"
+    restart: always

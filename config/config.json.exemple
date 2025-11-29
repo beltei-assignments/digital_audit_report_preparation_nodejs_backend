@@ -38,13 +38,13 @@
     "loginAttempts": 5
   },
   "mail": {
-    "from": "digital-audit-reply@example.cpm",
+    "from": "digital-audit-reply@example.com",
     "host": "localhost",
     "port": "1025",
     "secure": false,
     "auth": {
-      "user": "user_example",
-      "pass": "pass_example"
+      "user": "digital-audit-reply@example.com",
+      "pass": "your_password"
     }
   }
 }

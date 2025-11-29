@@ -39,7 +39,7 @@ export async function boot(app) {
 
   console.log('-------> ⌛  Connecting to database, please wait... <-------')
   await sequelize.sync({ force: option.force })
-  console.log('-------> ✔️  Connectedto database <-------')
+  console.log('-------> ✔️  Connected to database <-------')
 
   server.listen(config.port, () => {
     console.log(

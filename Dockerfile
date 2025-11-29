@@ -1,6 +1,6 @@
 FROM node:18.12.0
 
-EXPOSE 5000
+EXPOSE 3001
 
 RUN mkdir -p /home/app
 
