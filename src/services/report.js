@@ -1,6 +1,7 @@
 import models from '../models/index.js'
 import { AppError } from '../utils/error.js'
 import { Op } from 'sequelize'
+import { STATUS_ID } from "../constants/index.js";
 
 const { Report, Regulator, Status } = models
 
@@ -48,6 +49,19 @@ export async function createReport({ payload, transaction }) {
 export async function updateReport({ id, fk_auditor_id, payload, transaction }) {
   const report = await getReportById({ id, fk_auditor_id })
   await report.update(payload, { transaction })
+  return report
+}
+
+export async function sendRequest({ id, fk_auditor_id, payload, transaction }) {
+  const { report_send_request_type } = payload
+  const isAuditorRequest = report_send_request_type == 'AUDITOR_REQUEST_REVIEW'
+  const payloadUpdate = {
+    ...(isAuditorRequest && { fk_status_id: STATUS_ID.WAITING_FOR_REVIEW })
+  }
+
+  const report = await getReportById({ id, fk_auditor_id })
+  await report.update(payloadUpdate, { transaction })
+
   return report
 }
 

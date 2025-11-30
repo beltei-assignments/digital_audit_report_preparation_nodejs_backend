@@ -9,6 +9,7 @@ export default function initRoutes(middleware) {
   router.get('/:id', middleware, reportController.getById)
   router.post('/', middleware, reportController.create)
   router.put('/:id', middleware, reportController.update)
+  router.put('/:id/send-request', middleware, reportController.sendRequest)
   router.delete('/:id', middleware, reportController.remove)
 
   return router

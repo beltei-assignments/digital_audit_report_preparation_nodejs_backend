@@ -2,5 +2,6 @@ export const STATUS_ID = {
   PREPARING: 1,
   WAITING_FOR_REVIEW: 2,
   REJECTED: 3,
-  FINISHED: 4,
+  APPROVED: 4,
+  FINISHED: 5,
 }
