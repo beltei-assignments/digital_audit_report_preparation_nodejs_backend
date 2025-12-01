@@ -81,14 +81,6 @@ module.exports = {
             code: 'ADMINISTRATOR',
             allows: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
           },
-          {
-            code: 'MANAGER',
-            allows: ['READ'],
-          },
-          {
-            code: 'AUDITOR',
-            allows: ['READ'],
-          },
         ],
       },
       {
@@ -114,15 +106,17 @@ module.exports = {
         code: 'REPORTS',
         roles: [
           {
-            code: 'ADMINISTRATOR',
+            code: 'AUDITOR',
             allows: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
           },
+        ],
+      },
+      {
+        name: 'Reports Approval',
+        code: 'REPORTS_APPROVAL',
+        roles: [
           {
             code: 'MANAGER',
-            allows: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
-          },
-          {
-            code: 'AUDITOR',
             allows: ['CREATE', 'READ', 'UPDATE', 'DELETE'],
           },
         ],
