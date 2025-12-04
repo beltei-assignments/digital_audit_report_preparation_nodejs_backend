@@ -113,12 +113,14 @@ export async function sendRequest({ id, fk_auditor_id, payload, transaction }) {
       { transaction }
     )
 
-    const reportsShared = await ReportShared.findAll({
-      where: {
-        fk_report_id: report.id,
+    const reportsShared = await ReportShared.findAll(
+      {
+        where: {
+          fk_report_id: report.id,
+        },
       },
-      transaction,
-    })
+      { transaction }
+    )
 
     if (reportsShared.length) {
       await ReportShared.destroy(
