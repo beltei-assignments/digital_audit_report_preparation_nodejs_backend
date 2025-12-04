@@ -34,8 +34,8 @@ jobs:
             cd ${{ secrets.SERVER_APP_PATH }}
             docker compose pull
             docker stop audit-app-backend || true
-            docker system prune -a -f
             docker compose up -d
+            docker system prune -a -f
 
           # script: |
           #   docker pull ${{ secrets.DOCKERHUB_USERNAME }}/audit-app-backend:latest
