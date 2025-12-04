@@ -1,7 +1,7 @@
 import { Model, DataTypes, Sequelize } from 'sequelize'
 import { sequelize } from '../../boot/index.js'
 
-class UserHasRole extends Model {}
+class ReportShared extends Model {}
 
 export const schema = {
   id: {
@@ -40,13 +40,13 @@ export const schema = {
   },
 }
 
-UserHasRole.init(schema, {
+ReportShared.init(schema, {
   freezeTableName: true,
-  modelName: 'user_has_roles',
+  modelName: 'report_shared',
   sequelize,
   timestamps: false,
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
 
-export default UserHasRole
+export default ReportShared

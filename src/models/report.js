@@ -76,6 +76,10 @@ export const schema = {
     allowNull: false,
     defaultValue: false,
   },
+  requested_review_at: {
+    allowNull: true,
+    type: DataTypes.DATE,
+  },
   created_at: {
     allowNull: false,
     type: DataTypes.DATE,

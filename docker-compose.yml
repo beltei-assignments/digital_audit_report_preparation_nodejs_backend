@@ -1,7 +1,10 @@
 version: '3'
 services:
   audit-app-backend:
-    image: chetradocker/audit-app-backend
+    image: chetradocker/audit-app-backend:latest
+    container_name: audit-app-backend
+    volumes:
+      - /var/www/my-website.com/audit-pro/config.json:/home/app/config/config.json
     build: .
     ports:
       - "3001:3001"

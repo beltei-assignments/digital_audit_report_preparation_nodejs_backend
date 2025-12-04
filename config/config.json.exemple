@@ -38,6 +38,7 @@
     "loginAttempts": 5
   },
   "mail": {
+    "enable": true,
     "from": "digital-audit-reply@example.com",
     "host": "localhost",
     "port": "1025",

@@ -3,3 +3,9 @@ export const ROLE_NAME = {
   MANAGER: 'MANAGER',
   AUDITOR: 'AUDITOR',
 }
+
+export const ROLE_ID = {
+  ADMINISTRATOR: 1,
+  MANAGER: 2,
+  AUDITOR: 3,
+}

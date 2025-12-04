@@ -12,5 +12,7 @@ const transporter = nodemailer.createTransport({
 })
 
 export async function sendMail(options) {
+  if (!config.mail.enable) return
+
   await transporter.sendMail(options)
 }
