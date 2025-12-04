@@ -33,6 +33,8 @@ jobs:
           script: |
             cd ${{ secrets.SERVER_APP_PATH }}
             docker compose pull
+            docker stop audit-app-backend || true
+            docker rm audit-app-backend || true
             docker compose up -d
 
           # script: |
