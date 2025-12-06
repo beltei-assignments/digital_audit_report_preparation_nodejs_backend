@@ -1,4 +1,5 @@
 {
+  "env": "dev", // dev, qua, prod
   "host": "localhost",
   "port": 5000,
   "cors": {
@@ -40,6 +41,7 @@
   "mail": {
     "enable": true,
     "from": "digital-audit-reply@example.com",
+    "redirect": "redirect-mail@example.com",
     "host": "localhost",
     "port": "1025",
     "secure": false,

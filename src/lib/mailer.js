@@ -14,5 +14,9 @@ const transporter = nodemailer.createTransport({
 export async function sendMail(options) {
   if (!config.mail.enable) return
 
+  if (config.env == 'qua') {
+    options.to = config.mail.redirect
+  }
+
   await transporter.sendMail(options)
 }
