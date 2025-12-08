@@ -5,7 +5,6 @@ export default function defineAppDbAssociations(models) {
     Permission,
     RoleHasPermission,
     UserHasRole,
-    Account,
     Payment,
     Status,
     ReportType,

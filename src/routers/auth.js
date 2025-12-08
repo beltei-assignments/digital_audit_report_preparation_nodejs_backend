@@ -1,7 +1,5 @@
 import { Router } from 'express'
-// import authService from '../services/auth.js'
 import ensureFields from '../middleware/ensure-fields.js'
-// import ensurePermissions from '../middleware/ensure-roles.js'
 import * as authController from '../controllers/auth-controler.js'
 
 export default function initRoutes(middleware) {
@@ -23,6 +21,30 @@ export default function initRoutes(middleware) {
       { limitTo: ['body'] }
     ),
     authController.login
+  )
+
+  router.patch(
+    '/profile',
+    middleware,
+    // ensureFields(
+    //   {
+    //     email: {
+    //       notEmpty: true,
+    //       isEmail: true,
+    //     },
+    //     password: {
+    //       notEmpty: true,
+    //     },
+    //   },
+    //   { limitTo: ['body'] }
+    // ),
+    authController.updateProfile
+  )
+
+  router.patch(
+    '/update-password',
+    middleware,
+    authController.updatePassword
   )
 
   router.post(

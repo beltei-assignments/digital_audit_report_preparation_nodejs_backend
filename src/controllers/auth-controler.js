@@ -5,6 +5,7 @@ import { config } from '../../boot/index.js'
 import * as authService from '../services/auth.js'
 import { generateToken, verifyToken } from '../utils/jwt.js'
 import { sendMail } from '../lib/mailer.js'
+import { formatDateTime } from '../utils/date.js'
 
 export async function login(req, res, next) {
   try {
@@ -21,11 +22,12 @@ export async function login(req, res, next) {
     if (user.login_failed) {
       const currentDate = new Date()
       const continueDate = new Date(user.login_continue)
-      const minutes = continueDate.getMinutes() - currentDate.getMinutes()
-      if (minutes > 0) {
+      if (currentDate < continueDate) {
         return res.status(403).send({
           success: false,
-          message: `Your account have been blocked ${minutes} min(s), please try again later`,
+          message: `Your account have been blocked until ${formatDateTime(
+            continueDate
+          )}, please try again later`,
         })
       }
 
@@ -134,6 +136,38 @@ export async function whoAmI(req, res, next) {
   }
 }
 
+export async function updateProfile(req, res, next) {
+  try {
+    await authService.updateUser(req.user.user_id, req.body)
+
+    res.send({ success: true, message: 'Updated successful' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function updatePassword(req, res, next) {
+  try {
+    const { password, new_password } = req.body
+    const user = await authService.getUserById(req.user.user_id)
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      return res
+        .status(400)
+        .send({ success: false, message: 'Current password is invalid' })
+    }
+
+    const hashedPassword = await bcrypt.hash(new_password, 10)
+    await authService.updateUser(req.user.user_id, {
+      password: hashedPassword,
+    })
+
+    res.send({ success: true, message: 'Updated successful' })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export async function sendResetPassword(req, res) {
   const { email } = req.body
   const resUser = await authService.getUserByEmail(email)
@@ -144,7 +178,7 @@ export async function sendResetPassword(req, res) {
     const token = generateToken({
       payload: { email },
       secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
-      expiresIn: '60m',
+      expiresIn: '5m',
     })
     const html = generateResetPasswordEmail(resUser, token)
 
@@ -210,10 +244,22 @@ export async function resetPassword(req, res) {
       token,
       secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
     })
+    const user = await authService.getUserByEmail(decode.email)
+
+    if (await bcrypt.compare(password, user.password)) {
+      return res
+        .status(400)
+        .send({ success: false, message: 'Password is already used' })
+    }
+
     const encryptedPassword = await bcrypt.hash(password, 10)
 
-    const user = await authService.getUserByEmail(decode.email)
     user.password = encryptedPassword
+    user.count_login_fail_time = 0
+    user.count_login_fail = 0
+    user.login_failed = false
+    user.login_continue = null
+
     await user.save()
 
     res.send({

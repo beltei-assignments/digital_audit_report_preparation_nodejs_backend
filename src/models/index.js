@@ -4,7 +4,6 @@ import Role from './role.js'
 import Permission from './permission.js'
 import RoleHasPermission from './role-has-permission.js'
 import UserHasRole from './user-has-role.js'
-import Account from './account.js'
 import Status from './status.js'
 import ReportType from './report-type.js'
 import Regulator from './regulator.js'
@@ -17,7 +16,6 @@ export default {
   Permission,
   RoleHasPermission,
   UserHasRole,
-  Account,
   Status,
   ReportType,
   Regulator,
@@ -31,7 +29,6 @@ defineAppDbAssociations({
   Permission,
   RoleHasPermission,
   UserHasRole,
-  Account,
   Status,
   ReportType,
   Regulator,
