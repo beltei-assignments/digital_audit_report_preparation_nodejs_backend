@@ -18,6 +18,7 @@ export async function getAllReports({
   name,
   priority,
   is_manager,
+  ids,
 }) {
   const isAuditor = fk_user_id && fk_report_type_id && !fk_status_id
 
@@ -43,6 +44,11 @@ export async function getAllReports({
       ...(is_manager && { fk_report_type_id: REPORT_TYPE_ID.AUDIT }),
       ...(fk_status_id && { fk_status_id }),
       ...(id && { id }),
+      ...(ids && {
+        id: {
+          [Op.in]: ids,
+        },
+      }),
       ...(priority && { priority }),
       ...(name && { name: { [Op.like]: `%${name}%` } }),
     },
@@ -66,7 +72,7 @@ export async function countStatus({ fk_auditor_id }) {
     ],
     where: {
       fk_report_type_id: REPORT_TYPE_ID.AUDIT,
-      ...(fk_auditor_id && { fk_auditor_id })
+      ...(fk_auditor_id && { fk_auditor_id }),
     },
     group: ['fk_status_id'],
   })
