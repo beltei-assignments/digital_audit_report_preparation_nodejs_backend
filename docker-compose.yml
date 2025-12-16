@@ -1,10 +1,10 @@
 version: '3'
 services:
   audit-app-backend:
-    image: chetradocker/audit-app-backend:latest
+    image: your_docker_username/audit-app-backend:latest
     container_name: audit-app-backend
     ports:
       - "3001:3001"
     volumes:
-      - /var/www/my-website.com/audit-pro/config.json:/home/app/config/config.json
+      - /path_to_server/config.json:/home/app/config/config.json
     restart: always
