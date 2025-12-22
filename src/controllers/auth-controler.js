@@ -178,7 +178,7 @@ export async function sendResetPassword(req, res) {
     const token = generateToken({
       payload: { email },
       secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
-      expiresIn: '5m',
+      expiresIn: '1h',
     })
     const html = generateResetPasswordEmail(resUser, token)
 
