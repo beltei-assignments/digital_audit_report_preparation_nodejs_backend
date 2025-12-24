@@ -16,6 +16,13 @@
     "dialect": "mariadb",
     "timezone": "Asia/Phnom_Penh",
     "option": {
+      "dialectOptions": {
+        "ssl": {
+          "require": true,
+          "rejectUnauthorized": false
+        },
+        "connectTimeout": 30000
+      },
       "sync": false,
       "force": false,
       "logging": false,
