@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import { config } from '../../boot/index.js'
+import { sendToMailSerive } from './mail-service.js'
 
 const transporter = nodemailer.createTransport({
   host: config.mail.host,
@@ -12,11 +13,18 @@ const transporter = nodemailer.createTransport({
 })
 
 export async function sendMail(options) {
-  if (!config.mail.enable) return
+  if (!config.mail.enable && !config.mailService.enable) return
+
+  // Using email service instead
+  if (config.mailService.enable) {
+    sendToMailSerive(options)
+    return
+  }
 
   if (config.env == 'qua') {
     options.to = config.mail.redirect
   }
 
+  // Using own email smtp
   await transporter.sendMail(options)
 }

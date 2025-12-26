@@ -136,6 +136,7 @@ export async function sendRequest({ id, fk_auditor_id, payload, transaction }) {
   }
 
   const mailOptions = {
+    name: 'AuditPro',
     from: config.mail.from,
     to: auditor.email,
     subject: '',

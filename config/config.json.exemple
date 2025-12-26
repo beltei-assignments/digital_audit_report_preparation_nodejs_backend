@@ -56,5 +56,12 @@
       "user": "digital-audit-reply@example.com",
       "pass": "your_password"
     }
+  },
+  "mailService": {
+    "enable": false,
+    "url": "http://localhost:4000",
+    "from": "digital-audit-reply@example.com",
+    "redirect": "redirect-mail@example.com",
+    "apiKey": "api_key"
   }
 }

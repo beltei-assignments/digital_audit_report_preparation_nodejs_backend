@@ -183,6 +183,7 @@ export async function sendResetPassword(req, res) {
     const html = generateResetPasswordEmail(resUser, token)
 
     const mailOptions = {
+      name: 'AuditPro',
       from: config.mail.from,
       to: email,
       subject: 'Reset Password',
