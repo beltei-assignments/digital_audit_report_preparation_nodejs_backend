@@ -15,7 +15,7 @@ export async function login(req, res, next) {
     if (!user) {
       return res.status(401).send({
         success: false,
-        message: 'Your email or password is invalid',
+        message: res.__('auth.messages.loginFailed'),
       })
     }
 
@@ -25,9 +25,9 @@ export async function login(req, res, next) {
       if (currentDate < continueDate) {
         return res.status(403).send({
           success: false,
-          message: `Your account have been blocked until ${formatDateTime(
-            continueDate
-          )}, please try again later`,
+          message: res.__('auth.messages.loginBlock', {
+            date: formatDateTime(continueDate),
+          }),
         })
       }
 
@@ -81,7 +81,7 @@ export async function login(req, res, next) {
         roles,
         permissions,
         token,
-        message: 'Login is successful.',
+        message: res.__('auth.messages.loginSuccess'),
       })
     }
 
@@ -102,7 +102,7 @@ export async function login(req, res, next) {
     }
     return res.status(401).send({
       success: false,
-      message: 'Your email or password is invalid',
+      message: res.__('auth.messages.loginFailed'),
     })
   } catch (error) {
     next(error)
@@ -140,7 +140,10 @@ export async function updateProfile(req, res, next) {
   try {
     await authService.updateUser(req.user.user_id, req.body)
 
-    res.send({ success: true, message: 'Updated successful' })
+    res.send({
+      success: true,
+      message: res.__('profile.messages.updateSuccess'),
+    })
   } catch (error) {
     next(error)
   }
@@ -152,9 +155,10 @@ export async function updatePassword(req, res, next) {
     const user = await authService.getUserById(req.user.user_id)
 
     if (!(await bcrypt.compare(password, user.password))) {
-      return res
-        .status(400)
-        .send({ success: false, message: 'Current password is invalid' })
+      return res.status(400).send({
+        success: false,
+        message: res.__('auth.messages.currentPasswordInvalid'),
+      })
     }
 
     const hashedPassword = await bcrypt.hash(new_password, 10)
@@ -162,7 +166,10 @@ export async function updatePassword(req, res, next) {
       password: hashedPassword,
     })
 
-    res.send({ success: true, message: 'Updated successful' })
+    res.send({
+      success: true,
+      message: res.__('auth.messages.passwordUpdated'),
+    })
   } catch (error) {
     next(error)
   }
@@ -172,7 +179,9 @@ export async function sendResetPassword(req, res) {
   const { email } = req.body
   const resUser = await authService.getUserByEmail(email)
   if (!resUser)
-    return res.status(404).send({ success: false, message: 'Email is invalid' })
+    return res
+      .status(404)
+      .send({ success: false, message: res.__('auth.messages.emailInvalid') })
 
   try {
     const token = generateToken({
@@ -191,7 +200,10 @@ export async function sendResetPassword(req, res) {
     }
     await sendMail(mailOptions)
 
-    res.send({ success: true, message: 'Send email successful.' })
+    res.send({
+      success: true,
+      message: res.__('auth.messages.resetPasswordSent'),
+    })
   } catch (error) {
     throw error
   }
@@ -232,9 +244,10 @@ export async function verifyResetPassword(req, res) {
       },
     })
   } catch (error) {
-    res
-      .status(404)
-      .send({ success: false, message: 'Token is invalid or expire' })
+    res.status(404).send({
+      success: false,
+      message: res.__('auth.messages.resetLinkExpired'),
+    })
   }
 }
 
@@ -250,7 +263,7 @@ export async function resetPassword(req, res) {
     if (await bcrypt.compare(password, user.password)) {
       return res
         .status(400)
-        .send({ success: false, message: 'Password is already used' })
+        .send({ success: false, message: res.__('auth.messages.passwordUsed') })
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10)
@@ -265,11 +278,14 @@ export async function resetPassword(req, res) {
 
     res.send({
       success: true,
-      message: 'Password has been changed',
+      message: res.__('auth.messages.passwordUpdated'),
     })
   } catch (error) {
     res
       .status(404)
-      .send({ success: false, message: 'Token is invalid or expire' })
+      .send({
+        success: false,
+        message: res.__('auth.messages.resetLinkExpired'),
+      })
   }
 }

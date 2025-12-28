@@ -9,7 +9,7 @@ export default function initServices(tableName, config) {
   return { getAll, findByPk, create, update, destroy }
 
   async function getAll(req, res) {
-    const { page, limit, name, ...filters } = req.query
+    const { page, limit, name, lang, ...filters } = req.query
       ? autoConvertObjValues(req.query)
       : null
 

@@ -321,17 +321,19 @@ function calculateRiskScore(report) {
 /*
  * Get risk level
  */
-function getRiskLevel(score) {
-  if (score >= 70) return { level: 'critical', label: 'Critical Risk' }
-  if (score >= 50) return { level: 'high', label: 'High Risk' }
-  if (score >= 30) return { level: 'medium', label: 'Medium Risk' }
-  return { level: 'low', label: 'Low Risk' }
+function getRiskLevel(res, score) {
+  if (score >= 70)
+    return { level: 'critical', label: res.__('report.risk.critical') }
+  if (score >= 50) return { level: 'high', label: res.__('report.risk.high') }
+  if (score >= 30)
+    return { level: 'medium', label: res.__('report.risk.medium') }
+  return { level: 'low', label: res.__('report.risk.low') }
 }
 
 /*
  * Notification generator
  */
-export async function generateNotifications({ fk_auditor_id }) {
+export async function generateNotifications({ res, fk_auditor_id }) {
   const oneMonthAgo = new Date()
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
 
@@ -370,19 +372,26 @@ export async function generateNotifications({ fk_auditor_id }) {
 
   reports.forEach((report) => {
     const score = calculateRiskScore(report)
-    const risk = getRiskLevel(score)
+    const risk = getRiskLevel(res, score)
     const endDate = new Date(report.due_date)
     const daysRemaining = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24))
 
     countRisks[risk.level].total += 1 // risk.level = "critical", "high", "medium", and "low".
     countRisks[risk.level].report_ids.push(report.id)
 
+    const message = res.__('report.alert.message', {
+      name: report.name,
+      risk: risk.label,
+      daysRemaining,
+      progress: report.progress,
+    })
+
     if (risk.level === 'critical' || risk.level === 'high') {
       alerts.push({
         id: report.id,
         type: risk.level,
         risk_score: score,
-        message: `"${report.name}" is at ${risk.label} (${daysRemaining} days remaining, ${report.progress}% complete)`,
+        message: message.replace(/&#x2F;/g, '/'),
         report,
       })
     }

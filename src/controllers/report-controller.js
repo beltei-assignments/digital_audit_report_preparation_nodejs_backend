@@ -16,7 +16,7 @@ export async function getAll(req, res, next) {
 export async function countStatus(req, res, next) {
   try {
     const data = await reportService.countStatus({
-      ...(req.query.is_auditor && { fk_auditor_id: req.user.user_id, })
+      ...(req.query.is_auditor && { fk_auditor_id: req.user.user_id }),
     })
     res.json(data)
   } catch (error) {
@@ -39,6 +39,7 @@ export async function getById(req, res, next) {
 export async function generateNotifications(req, res, next) {
   try {
     const [count_risks, alerts] = await reportService.generateNotifications({
+      res,
       fk_auditor_id: req.user.user_id,
     })
     res.json({

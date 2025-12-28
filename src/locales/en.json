@@ -1,0 +1,31 @@
+{
+  "auth": {
+    "messages": {
+      "loginFailed": "Your email or password is invalid",
+      "loginSuccess": "Login is successful",
+      "loginBlock": "Your account have been blocked until {{date}}, please try again later.",
+      "currentPasswordInvalid": "Current password is invalid",
+      "passwordUpdated": "Password updated successful",
+      "emailInvalid": "Email is invalid",
+      "resetPasswordSent": "Email sent successful",
+      "resetLinkExpired": "Reset password link is invalid or expired",
+      "passwordUsed": "Password is already used"
+    }
+  },
+  "profile": {
+    "messages": {
+      "updateSuccess": "Profile updated successful"
+    }
+  },
+  "report": {
+    "alert": {
+      "message": "'{{name}}' is at {{risk}} ({{daysRemaining}} days remaining, {{progress}}% complete)"
+    },
+    "risk": {
+      "critical": "Critical risk",
+      "high": "High risk",
+      "medium": "Medium risk",
+      "low": "Low risk"
+    }
+  }
+}
