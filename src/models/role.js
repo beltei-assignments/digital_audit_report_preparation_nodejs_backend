@@ -15,7 +15,7 @@ export const schema = {
     allowNull: false,
     unique: true,
   },
-  name: {
+  name_en: {
     type: DataTypes.STRING(255),
     allowNull: false,
   },

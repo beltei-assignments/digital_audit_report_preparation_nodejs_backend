@@ -72,7 +72,8 @@ export async function login(req, res, next) {
           roles: roles.map((role) => role.name),
           permissions,
         },
-        secretOrPrivateKey: 'LOGIN-KEY-HL8D8A3OA1',
+        secretOrPrivateKey: config.auth.loginSecretKey,
+        expiresIn: config.auth.loginTokenExpired,
       })
 
       return res.json({
@@ -186,8 +187,8 @@ export async function sendResetPassword(req, res) {
   try {
     const token = generateToken({
       payload: { email },
-      secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
-      expiresIn: '1h',
+      secretOrPrivateKey: config.auth.resetPasswordSecretKey,
+      expiresIn: config.auth.resetPasswordExpired,
     })
     const html = generateResetPasswordEmail(resUser, token)
 
@@ -233,7 +234,7 @@ export async function verifyResetPassword(req, res) {
     const { token } = req.body
     const decode = verifyToken({
       token,
-      secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
+      secretOrPrivateKey: config.auth.resetPasswordSecretKey,
     })
 
     res.send({
@@ -256,7 +257,7 @@ export async function resetPassword(req, res) {
     const { token, password } = req.body
     const decode = verifyToken({
       token,
-      secretOrPrivateKey: 'FORGET-KEY-XYTAO5YE6N',
+      secretOrPrivateKey: config.auth.resetPasswordSecretKey,
     })
     const user = await authService.getUserByEmail(decode.email)
 
@@ -281,11 +282,9 @@ export async function resetPassword(req, res) {
       message: res.__('auth.messages.passwordUpdated'),
     })
   } catch (error) {
-    res
-      .status(404)
-      .send({
-        success: false,
-        message: res.__('auth.messages.resetLinkExpired'),
-      })
+    res.status(404).send({
+      success: false,
+      message: res.__('auth.messages.resetLinkExpired'),
+    })
   }
 }

@@ -18,6 +18,7 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction()
     try {
+      await queryInterface.bulkDelete('reports_shared')
       await queryInterface.dropTable('reports_shared')
       await transaction.commit()
     } catch (error) {

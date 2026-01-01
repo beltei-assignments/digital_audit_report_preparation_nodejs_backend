@@ -10,7 +10,7 @@ export const schema = {
     primaryKey: true,
     type: DataTypes.INTEGER(11),
   },
-  name: {
+  name_en: {
     type: DataTypes.STRING(255),
     allowNull: false,
   },

@@ -1,3 +1,4 @@
+import { config } from '../../boot/index.js'
 import { verifyToken } from '../utils/jwt.js'
 
 export default function verifyHeader(req, res, next) {
@@ -14,7 +15,7 @@ export default function verifyHeader(req, res, next) {
   try {
     const decode = verifyToken({
       token,
-      secretOrPrivateKey: 'LOGIN-KEY-HL8D8A3OA1',
+      secretOrPrivateKey: config.auth.loginSecretKey,
     })
     req.user = decode
   } catch (error) {

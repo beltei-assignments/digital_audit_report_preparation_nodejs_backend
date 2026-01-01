@@ -43,7 +43,11 @@
     }
   },
   "auth": {
-    "loginAttempts": 5
+    "loginAttempts": 5,
+    "loginSecretKey": "your_secret_key",
+    "loginTokenExpired": "1d",
+    "resetPasswordSecretKey": "your_secret_key",
+    "resetPasswordExpired": "5min"
   },
   "mail": {
     "enable": true,

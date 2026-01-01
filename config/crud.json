@@ -5,7 +5,16 @@
         "ADMINISTRATOR": "ALL"
       },
       "RULES": {
-        "name": {
+        "name_kh": {
+          "notEmpty": true,
+          "isLength": {
+            "options": {
+              "max": 255,
+              "min": 1
+            }
+          }
+        },
+        "name_en": {
           "notEmpty": true,
           "isLength": {
             "options": {

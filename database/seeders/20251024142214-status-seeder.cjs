@@ -5,23 +5,23 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     return queryInterface.bulkInsert('statuses', [
       {
-        name: 'Preparing',
+        name_en: 'Preparing',
         name_kh: 'កំពុងរៀបចំ',
       },
       {
-        name: 'Waiting for Review',
+        name_en: 'Waiting for Review',
         name_kh: 'រងចាំការពិនិត្យ',
       },
       {
-        name: 'Rejected',
-        name_kh: 'បានបដិសេធ',
+        name_en: 'Rejected',
+        name_kh: 'បានបដិសេដ',
       },
       {
-        name: 'Approved',
-        name_kh: 'យល់ព្រម',
+        name_en: 'Approved',
+        name_kh: 'យល់ព្រម​អនុម័ត',
       },
       {
-        name: 'Finished',
+        name_en: 'Finished',
         name_kh: 'រួចរាល់',
       },
     ])
