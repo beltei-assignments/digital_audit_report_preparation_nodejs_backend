@@ -7,6 +7,7 @@ import { config } from '../../boot/index.js'
 import fs from 'fs'
 import path from 'path'
 import { now } from 'sequelize/lib/utils'
+import client from '../lib/redis.js'
 
 const { Report, Regulator, Status, User, Role, ReportShared } = models
 
@@ -58,7 +59,15 @@ export async function getAllReports({
   return data
 }
 
-export async function countStatus({ fk_auditor_id }) {
+export async function countStatus({ user_id, fk_auditor_id }) {
+  const cacheKey = `status_counts_${user_id}`
+
+  const cachedStatusCounts = await client.get(cacheKey)
+
+  if (cachedStatusCounts) {
+    return JSON.parse(cachedStatusCounts)
+  }
+
   const statusIds = {
     2: 0,
     3: 0,
@@ -84,6 +93,8 @@ export async function countStatus({ fk_auditor_id }) {
       statusIds[fk_status_id] += total
     }
   }
+
+  await client.setEx(cacheKey, 60, JSON.stringify(statusIds))
 
   return statusIds
 }
@@ -334,6 +345,14 @@ function getRiskLevel(res, score) {
  * Notification generator
  */
 export async function generateNotifications({ res, fk_auditor_id }) {
+  const cacheKey = `notif_${fk_auditor_id}`
+
+  const cachedNotifications = await client.get(cacheKey)
+
+  if (cachedNotifications) {
+    return JSON.parse(cachedNotifications)
+  }
+
   const oneMonthAgo = new Date()
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
 
@@ -397,5 +416,9 @@ export async function generateNotifications({ res, fk_auditor_id }) {
     }
   })
 
-  return [countRisks, alerts]
+  const data = [countRisks, alerts]
+
+  await client.setEx(cacheKey, 60, JSON.stringify(data))
+
+  return data
 }

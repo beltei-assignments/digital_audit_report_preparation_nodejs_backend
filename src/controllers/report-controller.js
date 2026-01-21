@@ -16,6 +16,7 @@ export async function getAll(req, res, next) {
 export async function countStatus(req, res, next) {
   try {
     const data = await reportService.countStatus({
+      user_id: req.user.user_id,
       ...(req.query.is_auditor && { fk_auditor_id: req.user.user_id }),
     })
     res.json(data)

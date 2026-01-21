@@ -6,6 +6,7 @@
     "origin": "*"
   },
   "baseURL": "http://localhost:5000",
+  "redisURL": "redis://localhost:6379",
   "frontendBaseURL": "http://localhost:3000",
   "database": {
     "name": "your_database_name",
